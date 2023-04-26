@@ -2,7 +2,9 @@
 
 
 MADE BY Femq & Khale
+
 Femq  https://github.com/Vngi
+
 Khale https://github.com/xKlahex
 
 1. Add your Discord token to the .env file
