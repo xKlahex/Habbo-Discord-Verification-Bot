@@ -1,0 +1,4 @@
+requests
+datetime
+asyncio
+discord.py
