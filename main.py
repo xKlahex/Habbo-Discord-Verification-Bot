@@ -9,7 +9,6 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import json
 
-# Move variables to the top
 VERIFIED_ROLE_ID = 123456789 # INSERT_ROLE_ID_HERE
 LOG_CHANNEL_ID = 123456789 # INSERT_LOG_CHANNEL_ID_HERE
 VERIFICATION_CUTOFF_DATE = '2023-04-01T00:00:00.000Z' # ACCOUNT_AGE_REQUIEREMENT
