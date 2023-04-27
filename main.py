@@ -9,8 +9,10 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import json
 
+# Move variables to the top
 VERIFIED_ROLE_ID = 123456789 # INSERT_ROLE_ID_HERE
 LOG_CHANNEL_ID = 123456789 # INSERT_LOG_CHANNEL_ID_HERE
+VERIFY_CHANNEL_ID = 123456789 # INSERT_VERIFY_CHANNEL_ID_HERE
 VERIFICATION_CUTOFF_DATE = '2023-04-01T00:00:00.000Z' # ACCOUNT_AGE_REQUIEREMENT
 REQUIRED_LEVEL = 10 # LEVEL_REQUIEREMENT
 
@@ -42,6 +44,13 @@ async def log_verification(userInfo, log_data):
         f.write('\n')
 
 @bot.event
+async def on_message(message):
+    if message.channel.id == VERIFY_CHANNEL_ID:
+        await message.delete(delay=1)
+        if message.content.startswith(bot.command_prefix):
+            await bot.process_commands(message)
+
+@bot.event
 async def on_ready():
     print('+---------------------------------------------------+')
     print("Logged in and connected as: "+str(bot.user))
@@ -53,6 +62,10 @@ async def on_ready():
 
 @bot.hybrid_command(brief='Verify', description='Test')
 async def verify(ctx, username):
+    if ctx.channel.id != VERIFY_CHANNEL_ID:
+        await ctx.send("Please use this bot command in the designated Verify channel.", ephemeral=True)
+        return
+    
     with open('verified_users.json', 'r') as f:
         verified_users = json.load(f)
 
