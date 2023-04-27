@@ -9,7 +9,6 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import json
 
-# Move variables to the top
 VERIFIED_ROLE_ID = 123456789 # INSERT_ROLE_ID_HERE
 LOG_CHANNEL_ID = 123456789 # INSERT_LOG_CHANNEL_ID_HERE
 VERIFY_CHANNEL_ID = 123456789 # INSERT_VERIFY_CHANNEL_ID_HERE
@@ -20,7 +19,6 @@ load_dotenv()
 intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix="!g", intents=intents, description="Habbo Helper Bot")
-
 token = os.getenv("DISCORD_TOKEN")
 
 async def send_verification_embed(channel, username, ctx, userInfo, log_data):
@@ -42,14 +40,12 @@ async def log_verification(userInfo, log_data):
     with open('verification_logs.json', 'a') as f:
         json.dump(log_data, f)
         f.write('\n')
-
 @bot.event
 async def on_message(message):
     if message.channel.id == VERIFY_CHANNEL_ID:
         await message.delete(delay=1)
         if message.content.startswith(bot.command_prefix):
             await bot.process_commands(message)
-
 @bot.event
 async def on_ready():
     print('+---------------------------------------------------+')
@@ -128,13 +124,11 @@ async def verify(ctx, username):
         "member_since": userInfo["memberSince"],
         "verification_date": datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     }
-
     await log_verification(userInfo, log_data)
 
     channel = bot.get_channel(LOG_CHANNEL_ID)
     if channel:
         await send_verification_embed(channel, username, ctx, userInfo, log_data)
-
 @bot.event
 async def on_member_update(before, after):
     if before.nick != after.nick:
@@ -146,5 +140,4 @@ async def on_member_update(before, after):
                 verified_users.remove(user)
                 await update_verified_users_file(verified_users)
                 break
-
 bot.run(token)
